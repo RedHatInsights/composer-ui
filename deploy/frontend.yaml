@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/RedHatInsights/frontend-components/refs/heads/master/packages/config-utils/src/feo/spec/frontend-crd.schema.json
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: composer-ui
+objects:
+  - apiVersion: cloud.redhat.com/v1alpha1
+    kind: Frontend
+    metadata:
+      name: composer-ui
+    spec:
+      feoConfigEnabled: true
+      serviceTiles:
+        - id: composer-ui
+          section: subscriptions
+          group: subscriptions
+          title: Manage workspace to feature mappings
+          href: /subscriptions/workspaces
+          description: Manage workspace to feature mappings
+          icon: SubscriptionsIcon
+      searchEntries:
+        - id: "composer-ui"
+          title: "Subscription Workspaces"
+          href: /subscriptions/workspaces
+          description: "Manage workspace to feature mappings"
+          alt_title:
+            - Composer
+      bundleSegments:
+        - segmentId: composer-ui
+          bundleId: subscriptions
+          position: 200
+          navItems:
+            - id: composer-ui
+              title: Workspaces
+              href: /subscriptions/workspaces
+      API:
+        versions:
+          - v1
+      envName: ${ENV_NAME}
+      title: Subscription Workspaces
+      deploymentRepo: https://github.com/RedHatInsights/composer-ui
+      frontend:
+        paths:
+          - /apps/composer-ui
+      image: ${IMAGE}:${IMAGE_TAG}
+      pushCacheEnabled: true
+
+      module:
+        manifestLocation: '/apps/composer-ui/fed-mods.json'
+        modules:
+          - id: 'composer-ui'
+            module: './RootApp'
+            routes:
+              - pathname: /subscriptions/workspaces
+
+parameters:
+  - name: ENV_NAME
+    required: true
+  - name: IMAGE_TAG
+    required: true
+  - name: IMAGE
+    value: quay.io/redhat-services-prod/teamnado-konflux-tenant/composer-ui
