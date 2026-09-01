@@ -1,4 +1,32 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>RedHatInsights/shared-workflows//renovate/frontend"]
+  "updateNotScheduled": true,
+  "tekton": {
+    "enabled": true
+  },
+  "npm": {
+    "enabled": true,
+    "schedule": ["* * 1 * *"],
+    "automergeSchedule": ["* * * * *"]
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "recreateWhen": "always",
+    "rebaseWhen": "behind-base-branch",
+    "branchTopic": "lock-file-maintenance",
+    "schedule": ["* * 1 * *"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["tekton", "npm"],
+      "automerge": true
+    },
+    {
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch",
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch"]
+    }
+  ],
+  "labels": ["dependency", "konflux"]
 }
